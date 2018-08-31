@@ -3,6 +3,8 @@
   <persistence-unit name="Web_PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>src.entities.User</class>
+    <class>src.entities.Product</class>
+    <class>src.entities.ShoppingList</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/groceriesdb?zeroDateTimeBehavior=convertToNull"/>

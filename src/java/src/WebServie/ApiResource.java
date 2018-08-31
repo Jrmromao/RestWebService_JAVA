@@ -46,24 +46,26 @@ public class ApiResource {
     public ApiResource() {
     }
 
+    
+    
     @POST
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     public String loginUser(@FormParam("name") String name, @FormParam("password") String password) throws SQLException {
-        //TODO return proper representation object
-
+        
         c = new DBUtil();
         u = c.loginUser(name, password);
-
+        
         JSONObject json = new JSONObject();
         JSONObject userJson = new JSONObject();
-        if (u != null) {
+        if (u != null) { // if the login is succefful, 
+                         // creat a JASON array with the
+                         // user details and send it back to the cliente
 
             userJson.put("name", u.getName());
             userJson.put("email", u.getEmail());
             userJson.put("id", u.getId());
-            // userJson.put("password", u.getPassword());
-
+            userJson.put("dateJoined", u.getDateJoined());
             json.put("user", userJson);
             json.put("error", false);
             json.put("message", "login successful");
@@ -71,8 +73,7 @@ public class ApiResource {
             message = json.toString();
             return message;
 
-        } else {
-
+        } else { // else, create a JASON array with an error message
             json.put("error", true);
             json.put("message", "Invalid username or password");
             message = json.toString();
@@ -80,6 +81,10 @@ public class ApiResource {
         }
 
     }
+   
+    
+    
+    
     
     
     
@@ -103,6 +108,7 @@ public class ApiResource {
             userRegJson.put("id", u.getId());
             userRegJson.put("name", u.getName());
             userRegJson.put("email", u.getEmail());
+            userRegJson.put("dateJoined", u.getDateJoined());
 
             regJson.put("user", userRegJson);
             regJson.put("error", false);
@@ -138,16 +144,13 @@ public class ApiResource {
             prodJson.put("expiry_date", p.getExpireDate());
             prodJson.put("price", p.getPrice());
             prodJson.put("brand", p.getBrand());
-            
             json.put("product", prodJson);
             json.put("error", false);
             json.put("message", "Product found");
-
             message = json.toString();
             return message;
 
-        } else {
-
+        } else { // else, create a JASON array with an error message
             json.put("error", true);
             json.put("message", "this product is not in the system");
             message = json.toString();
@@ -156,6 +159,42 @@ public class ApiResource {
 
     }
 
+    
+    @GET
+    @Path("/getBestProduct")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getBestProduct() throws SQLException {
+        
+        c = new DBUtil();
+        p = c.getBestProduct();
+        JSONObject json = new JSONObject();
+        JSONObject prodJson = new JSONObject();
+        
+        if (p != null) {
+                        // if the product object is not null, add 
+                        // the product details to the a JASON array
+                        // and send it back to the client
+            prodJson.put("upc_num", p.getUpc_num());
+            prodJson.put("name", p.getProName());
+            prodJson.put("description", p.getProdDescription());
+            prodJson.put("expiry_date", p.getExpireDate());
+            prodJson.put("price", p.getPrice());
+            prodJson.put("brand", p.getBrand());
+            json.put("product", prodJson);
+            json.put("error", false);
+            json.put("message", "Product found");
+            message = json.toString();
+            return message;
+        } else {
+                // else, create a JASON array with an error message
+            json.put("error", true); 
+            json.put("message", "this product is not in the system");
+            message = json.toString();
+            return message;
+        }
+    }
 
-
+    
+    
+    
 }

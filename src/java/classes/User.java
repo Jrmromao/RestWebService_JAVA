@@ -15,6 +15,15 @@ public class User {
     private String _name;
     private String _email;
     private String _password;
+    private String _dateJoined;
+
+    public String getDateJoined() {
+        return _dateJoined;
+    }
+
+    public void setDateJoined(String _dateJoined) {
+        this._dateJoined = _dateJoined;
+    }
 
     public int getId() {
         return _Id;
